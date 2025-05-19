@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
@@ -22,6 +24,10 @@ public class OrderService {
     public OrderService(OrderRepository orderRepository, WebClient.Builder webClientBuilder) {
         this.orderRepository = orderRepository;
         this.webClientBuilder = webClientBuilder;
+    }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
     }
 
     public void createOrder(Order order) {
