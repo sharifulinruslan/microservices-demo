@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 @Service
 public class InventoryService {
     private final InventoryRepository inventoryRepository;
@@ -34,8 +36,8 @@ public class InventoryService {
         inventoryRepository.save(inventory);
     }
 
-    public Inventory getInventoryById(Long id) {
-        return inventoryRepository.findById(id).orElse(null);
+    public List<Inventory> getAllInventories() {
+        return inventoryRepository.findAll();
     }
 
     public Inventory getInventoryByProductId(Long productId) {
