@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payments")
@@ -19,5 +19,5 @@ public class Payment {
     private Long orderId;
     private Double amount;
     private String status;
-    private LocalDate paymentDate;
+    private LocalDateTime paymentDate;
 }
