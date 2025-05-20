@@ -1,3 +1,6 @@
+server:
+  port: 8085
+
 spring:
   application:
     name: payment-service
@@ -20,3 +23,6 @@ spring:
     redis:
       port: 6379
       host: localhost
+
+order-service:
+  url: http://localhost:8084/api/orders
