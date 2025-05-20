@@ -32,7 +32,7 @@ public class OrderService {
 
     public void createOrder(Order order) {
         UserDTO userDTO = webClientBuilder.build().get()
-                .uri(userServiceUrl + "/{id}", order.getId())
+                .uri(userServiceUrl + "/{id}", order.getUserId())
                 .retrieve()
                 .bodyToMono(UserDTO.class)
                 .block();
@@ -43,7 +43,7 @@ public class OrderService {
 
         for (Long productId : order.getProductIds()) {
             Boolean inStock = webClientBuilder.build().get()
-                    .uri(inventoryServiceUrl + "/inventory/product/{productId}/in-stock", productId)
+                    .uri(inventoryServiceUrl + "/product/{productId}/in-stock", productId)
                     .retrieve()
                     .bodyToMono(Boolean.class)
                     .block();
