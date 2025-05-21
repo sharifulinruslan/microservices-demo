@@ -29,7 +29,7 @@ public class ProductService {
     }
 
     @Cacheable(value = "products", key = "#id")
-    public Product getProductById(long id) {
+    public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
 
@@ -42,7 +42,7 @@ public class ProductService {
     }
 
     @CacheEvict(value = "products", key = "#id")
-    public void deleteProductById(long id) {
+    public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
 }
