@@ -24,6 +24,12 @@ public class InventoryController {
         return inventoryService.getAllInventories();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Inventory> getInventoryById(@PathVariable Long id) {
+        Inventory inventory = inventoryService.getInventoryById(id);
+        return new ResponseEntity<>(inventory, HttpStatus.OK);
+    }
+
     @GetMapping("/product/{productId}")
     public ResponseEntity<Inventory> getInventoryByProductId(@PathVariable Long productId) {
         Inventory inventory = inventoryService.getInventoryByProductId(productId);
