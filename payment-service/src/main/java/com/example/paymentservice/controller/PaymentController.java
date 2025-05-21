@@ -3,6 +3,7 @@ package com.example.paymentservice.controller;
 import com.example.paymentservice.entity.Payment;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,6 @@ public class PaymentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Payment> deletePayment(@PathVariable Long id) {
         paymentService.deletePaymentById(id);
-        return ResponseEntity.ok(paymentService.getPaymentById(id));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
