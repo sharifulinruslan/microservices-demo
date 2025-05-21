@@ -5,6 +5,9 @@ import com.example.orderservice.entity.Order;
 import com.example.orderservice.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -57,16 +60,19 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    @Cacheable(value = "orders", key = "#id")
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
 
-    public void updateOrderStatus(Long id, String status) {
+    @CachePut(value = "orders", key = "#id")
+    public Order updateOrderStatus(Long id, String status) {
         Order order = getOrderById(id);
         order.setStatus(status);
-        orderRepository.save(order);
+        return orderRepository.save(order);
     }
 
+    @CacheEvict(value = "orders", key = "#id")
     public void deleteOrderById(Long id) {
         orderRepository.deleteById(id);
     }

@@ -24,6 +24,10 @@ spring:
       host: localhost
       port: 6379
 
+  cache:
+    redis:
+      time-to-live: 5m
+
 user-service:
   url: http://localhost:8081/api/users
 product-service:
