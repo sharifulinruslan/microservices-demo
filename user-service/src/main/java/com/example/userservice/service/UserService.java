@@ -22,15 +22,15 @@ public class UserService {
     }
 
     @CachePut(value = "users", key = "#user.id")
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 
     @Cacheable(value = "users", key = "#id")
     public User getUserById(Long id) {
         return (User) userRepository.findById(id).orElse(null);
     }
-    
+
     public User getUserByEmail(String email) {
         return (User) userRepository.findByEmail(email).orElse(null);
     }

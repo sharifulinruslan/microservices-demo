@@ -24,8 +24,8 @@ public class ProductService {
     }
 
     @CachePut(value = "products", key = "#product.id")
-    public void updateProduct(Product product) {
-        productRepository.save(product);
+    public Product updateProduct(Product product) {
+        return productRepository.save(product);
     }
 
     @Cacheable(value = "products", key = "#id")
