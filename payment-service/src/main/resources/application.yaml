@@ -24,5 +24,9 @@ spring:
       port: 6379
       host: localhost
 
+  cache:
+    redis:
+      time-to-live: 5m
+
 order-service:
   url: http://localhost:8084/api/orders

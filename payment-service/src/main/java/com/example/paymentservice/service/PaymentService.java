@@ -4,6 +4,9 @@ import com.example.paymentservice.entity.Payment;
 import com.example.paymentservice.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,15 +34,18 @@ public class PaymentService {
         return paymentRepository.findAll();
     }
 
+    @Cacheable(value = "payments", key = "#id")
     public Payment getPaymentById(Long id) {
         return paymentRepository.findById(id).orElse(null);
     }
 
+    @CacheEvict(value = "payments", key = "#id")
     public void deletePaymentById(Long id) {
         paymentRepository.deleteById(id);
     }
 
-    public void updatePayment(Payment payment) {
-        paymentRepository.save(payment);
+    @CachePut(value = "payments", key = "#payment.id")
+    public Payment updatePayment(Payment payment) {
+        return paymentRepository.save(payment);
     }
 }
