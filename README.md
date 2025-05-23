@@ -1,10 +1,10 @@
-# Äåìî-ïðèëîæåíèå ñ ìèêðîñåðâèñíîé àðõèòåêòóðîé
+# Демо-приложение с микросервисной архитектурой
 
-5 ìèêðîñåðâèñîâ:
+5 микросервисов:
 - user-service
 - product-service
 - inventory-service
 - order-service
 - payment-service
 
-Èñïîëüçóåòñÿ ÁÄ PostgreSQL, NoSQL ÁÄ Redis äëÿ êýøèðîâàíèÿ
+Используется БД PostgreSQL, NoSQL БД Redis для кэширования
