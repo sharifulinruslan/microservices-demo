@@ -41,8 +41,9 @@ public class UserService {
 
     @CacheEvict(value = "users", key = "#id")
     public void deleteUser(Long id) {
-        if (this.getUserById(id) != null) {
-            userRepository.delete(this.getUserById(id));
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            userRepository.delete(user);
         }
     }
 }
