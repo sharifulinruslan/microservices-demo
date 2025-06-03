@@ -8,8 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +20,6 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private CacheManager cacheManager;
-    @Mock
-    private Cache cache;
     @InjectMocks
     private UserService userService;
     private User testUser;
@@ -61,7 +55,6 @@ class UserServiceTest {
     @Test
     void getUserById_WhenUserExists_ShouldReturnUser() {
         doReturn(Optional.of(testUser)).when(userRepository).findById(1L);
-        lenient().doReturn(cache).when(cacheManager).getCache("users");
 
         User result = userService.getUserById(1L);
 
@@ -136,6 +129,5 @@ class UserServiceTest {
         userService.deleteUser(1L);
 
         verify(userRepository, never()).delete(any());
-        verify(cacheManager, never()).getCache(anyString());
     }
 }
