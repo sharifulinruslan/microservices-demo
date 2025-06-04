@@ -32,11 +32,12 @@ public class InventoryService {
                 .retrieve()
                 .bodyToMono(ProductDTO.class)
                 .block();
-        if (productDTO == null) {
+        if (productDTO != null) {
+            inventory.setInStock(inventory.getQuantity() > 0);
+            inventoryRepository.save(inventory);
+        } else {
             System.err.println("Could not find product with id " + inventory.getProductId());
         }
-        inventory.setInStock(inventory.getQuantity() > 0);
-        inventoryRepository.save(inventory);
     }
 
     public List<Inventory> getAllInventories() {
