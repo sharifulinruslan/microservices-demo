@@ -26,7 +26,7 @@ class ProductControllerTest {
     @MockitoBean
     private ProductService productService;
     @Autowired
-    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper;
 
     private Product testProduct1;
     private Product testProduct2;
