@@ -32,7 +32,7 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
         paymentService.createPayment(payment);
-        return ResponseEntity.ok(payment);
+        return new ResponseEntity<>(payment, HttpStatus.CREATED);
     }
 
     @PutMapping
