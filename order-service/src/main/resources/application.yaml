@@ -6,7 +6,7 @@ spring:
     name: order-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/microservices_db
+    url: jdbc:postgresql://postgres:5432/microservices_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -21,7 +21,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: redis
       port: 6379
 
   cache:
@@ -29,10 +29,10 @@ spring:
       time-to-live: 5m
 
 user-service:
-  url: http://localhost:8081/api/users
+  url: http://user-service:8081/api/users
 product-service:
-  url: http://localhost:8082/api/products
+  url: http://product-service:8082/api/products
 inventory-service:
-  url: http://localhost:8083/api/inventory
+  url: http://inventory-service:8083/api/inventory
 payment-service:
-  url: http://localhost:8085/api/payments
+  url: http://payment-service:8085/api/payments
