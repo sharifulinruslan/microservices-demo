@@ -3,8 +3,8 @@ services:
     image: postgres
     container_name: postgres
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: microservices_db
     ports:
       - "5432:5432"
@@ -49,11 +49,11 @@ services:
     networks:
       - microservices-network
 
-  order-service:
+  inventory-service:
     build:
-      context: ./order-service
+      context: ./inventory-service
       dockerfile: Dockerfile
-    container_name: order-service
+    container_name: inventory-service
     ports:
       - "8083:8083"
     depends_on:
@@ -62,11 +62,11 @@ services:
     networks:
       - microservices-network
 
-  inventory-service:
+  order-service:
     build:
-      context: ./inventory-service
+      context: ./order-service
       dockerfile: Dockerfile
-    container_name: inventory-service
+    container_name: order-service
     ports:
       - "8084:8084"
     depends_on:
