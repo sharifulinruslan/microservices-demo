@@ -6,7 +6,7 @@ spring:
     name: inventory-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/microservices_db
+    url: jdbc:postgresql://postgres:5432/microservices_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -21,7 +21,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: redis
       port: 6379
 
   cache:
@@ -29,4 +29,4 @@ spring:
       time-to-live: 300000
 
 product-service:
-  url: http://localhost:8082/api/products
+  url: http://product-service:8082/api/products
