@@ -32,12 +32,17 @@ class UserServiceTest {
         testUser.setPassword("password");
         testUser.setEmail("test@email.com");
         testUser.setRole("testRole");
+        testUser.setYear(2024);
     }
 
     @Test
     void saveUser_ShouldCallRepositorySave() {
-        userService.saveUser(testUser);
+        doReturn(testUser).when(userRepository).save(testUser);
 
+        User result = userService.saveUser(testUser);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(testUser);
         verify(userRepository, times(1)).save(testUser);
     }
 
@@ -102,6 +107,7 @@ class UserServiceTest {
         user1.setId(2L);
         user1.setName("testUser2");
         user1.setEmail("test2@email.com");
+        user1.setYear(2023);
         List<User> expectedUsers = Arrays.asList(testUser, user1);
         doReturn(expectedUsers).when(userRepository).findAll();
 
@@ -117,8 +123,10 @@ class UserServiceTest {
     void deleteUser_WhenUserExists_ShouldDeleteAndEvictCacheUser() {
         doReturn(Optional.of(testUser)).when(userRepository).findById(1L);
 
-        userService.deleteUser(1L);
+        User result = userService.deleteUser(1L);
 
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(testUser);
         verify(userRepository, times(1)).delete(testUser);
     }
 
@@ -126,8 +134,54 @@ class UserServiceTest {
     void deleteUser_WhenUserDoesNotExist_ShouldDoNothing() {
         doReturn(Optional.empty()).when(userRepository).findById(1L);
 
-        userService.deleteUser(1L);
+        User result = userService.deleteUser(1L);
 
+        assertThat(result).isNull();
         verify(userRepository, never()).delete(any());
+    }
+
+    @Test
+    void getUsersByYear_ShouldReturnUsersByYear() {
+        User user1 = new User();
+        user1.setId(2L);
+        user1.setName("testUser2");
+        user1.setEmail("test2@email.com");
+        user1.setYear(2024);
+        List<User> expectedUsers = Arrays.asList(testUser, user1);
+        doReturn(expectedUsers).when(userRepository).findByYear(2024);
+
+        List<User> result = userService.getUsersByYear(2024);
+
+        assertThat(result).isNotNull();
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).isEqualTo(expectedUsers);
+        verify(userRepository, times(1)).findByYear(2024);
+    }
+
+    @Test
+    void getUserByYear_WhenUserExists_ShouldReturnFirstUser() {
+        User user1 = new User();
+        user1.setId(2L);
+        user1.setName("testUser2");
+        user1.setEmail("test2@email.com");
+        user1.setYear(2024);
+        List<User> users = Arrays.asList(testUser, user1);
+        doReturn(users).when(userRepository).findByYear(2024);
+
+        User result = userService.getUserByYear(2024);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(testUser);
+        verify(userRepository, times(1)).findByYear(2024);
+    }
+
+    @Test
+    void getUserByYear_WhenNoUserExists_ShouldReturnNull() {
+        doReturn(Arrays.asList()).when(userRepository).findByYear(2025);
+
+        User result = userService.getUserByYear(2025);
+
+        assertThat(result).isNull();
+        verify(userRepository, times(1)).findByYear(2025);
     }
 }
