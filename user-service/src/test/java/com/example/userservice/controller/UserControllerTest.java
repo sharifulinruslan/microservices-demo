@@ -40,6 +40,7 @@ class UserControllerTest {
         user1.setPassword("password1");
         user1.setRole("USER");
         user1.setEmail("user1@mail.com");
+        user1.setYear(2024);
 
         user2 = new User();
         user2.setId(2L);
@@ -47,6 +48,7 @@ class UserControllerTest {
         user2.setPassword("password2");
         user2.setRole("USER");
         user2.setEmail("user2@mail.com");
+        user2.setYear(2023);
 
         users = List.of(user1, user2);
     }
@@ -104,7 +106,7 @@ class UserControllerTest {
 
     @Test
     void saveUser_ShouldReturn200_Status() throws Exception {
-        doNothing().when(userService).saveUser(user1);
+        doReturn(user1).when(userService).saveUser(user1);
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,13 +132,53 @@ class UserControllerTest {
 
     @Test
     void deleteUser_ShouldReturn200_Status() throws Exception {
-        doNothing().when(userService).deleteUser(user1.getId());
+        doReturn(user1).when(userService).deleteUser(user1.getId());
 
         mockMvc.perform(delete("/api/users/{id}", user1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").doesNotExist());
+                .andExpect(jsonPath("$.name").value(user1.getName()));
 
         verify(userService, times(1)).deleteUser(user1.getId());
+    }
+
+    @Test
+    void getUsersByYear_ShouldReturnUsersByYear() throws Exception {
+        doReturn(users).when(userService).getUsersByYear(2024);
+
+        mockMvc.perform(get("/api/users/year/{year}", 2024)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value(user1.getName()))
+                .andExpect(jsonPath("$[0].year").value(user1.getYear()))
+                .andExpect(jsonPath("$[1].name").value(user2.getName()))
+                .andExpect(jsonPath("$[1].year").value(user2.getYear()));
+
+        verify(userService, times(1)).getUsersByYear(2024);
+    }
+
+    @Test
+    void getUserByYear_WhenUserExists_ShouldReturnFirstUser() throws Exception {
+        doReturn(user1).when(userService).getUserByYear(2024);
+
+        mockMvc.perform(get("/api/users/year/{year}/first", 2024)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(user1.getName()))
+                .andExpect(jsonPath("$.year").value(user1.getYear()));
+
+        verify(userService, times(1)).getUserByYear(2024);
+    }
+
+    @Test
+    void getUserByYear_WhenNoUserExists_ShouldReturnNothing() throws Exception {
+        doReturn(null).when(userService).getUserByYear(2025);
+
+        mockMvc.perform(get("/api/users/year/{year}/first", 2025)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").doesNotExist());
+
+        verify(userService, times(1)).getUserByYear(2025);
     }
 }
