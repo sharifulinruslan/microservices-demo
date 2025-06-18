@@ -51,4 +51,14 @@ public class UserController {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/year/{year}")
+    public List<User> getUsersByYear(@PathVariable Integer year) {
+        return userService.getUsersByYear(year);
+    }
+
+    @GetMapping("/year/{year}/first")
+    public User getUserByYear(@PathVariable Integer year) {
+        return userService.getUserByYear(year);
+    }
 }

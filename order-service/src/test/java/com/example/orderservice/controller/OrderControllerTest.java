@@ -51,6 +51,7 @@ class OrderControllerTest {
         user = new UserDTO();
         user.setId(1L);
         user.setName("Test User");
+        user.setYear(2024);
     }
 
     @Test

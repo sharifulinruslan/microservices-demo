@@ -46,4 +46,12 @@ public class UserService {
             userRepository.delete(user);
         }
     }
+
+    public List<User> getUsersByYear(Integer year) {
+        return userRepository.findByYear(year);
+    }
+
+    public User getUserByYear(Integer year) {
+        return userRepository.findByYear(year).stream().findFirst().orElse(null);
+    }
 }
