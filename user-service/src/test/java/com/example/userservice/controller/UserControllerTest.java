@@ -106,7 +106,7 @@ class UserControllerTest {
 
     @Test
     void saveUser_ShouldReturn200_Status() throws Exception {
-        doNothing().when(userService).saveUser(user1);
+        doReturn(user1).when(userService).saveUser(user1);
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -132,12 +132,12 @@ class UserControllerTest {
 
     @Test
     void deleteUser_ShouldReturn200_Status() throws Exception {
-        doNothing().when(userService).deleteUser(user1.getId());
+        doReturn(user1).when(userService).deleteUser(user1.getId());
 
         mockMvc.perform(delete("/api/users/{id}", user1.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").doesNotExist());
+                .andExpect(jsonPath("$.name").value(user1.getName()));
 
         verify(userService, times(1)).deleteUser(user1.getId());
     }

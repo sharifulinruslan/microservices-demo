@@ -36,20 +36,20 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        userService.saveUser(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        User savedUser = userService.saveUser(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.updateUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        User updatedUser = userService.updateUser(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable long id) {
-        userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        User deletedUser = userService.deleteUser(id);
+        return new ResponseEntity<>(deletedUser, HttpStatus.OK);
     }
 
     @GetMapping("/year/{year}")

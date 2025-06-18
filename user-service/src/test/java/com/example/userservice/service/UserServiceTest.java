@@ -37,8 +37,12 @@ class UserServiceTest {
 
     @Test
     void saveUser_ShouldCallRepositorySave() {
-        userService.saveUser(testUser);
+        doReturn(testUser).when(userRepository).save(testUser);
 
+        User result = userService.saveUser(testUser);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(testUser);
         verify(userRepository, times(1)).save(testUser);
     }
 
@@ -119,8 +123,10 @@ class UserServiceTest {
     void deleteUser_WhenUserExists_ShouldDeleteAndEvictCacheUser() {
         doReturn(Optional.of(testUser)).when(userRepository).findById(1L);
 
-        userService.deleteUser(1L);
+        User result = userService.deleteUser(1L);
 
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(testUser);
         verify(userRepository, times(1)).delete(testUser);
     }
 
@@ -128,8 +134,9 @@ class UserServiceTest {
     void deleteUser_WhenUserDoesNotExist_ShouldDoNothing() {
         doReturn(Optional.empty()).when(userRepository).findById(1L);
 
-        userService.deleteUser(1L);
+        User result = userService.deleteUser(1L);
 
+        assertThat(result).isNull();
         verify(userRepository, never()).delete(any());
     }
 

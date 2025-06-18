@@ -17,8 +17,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     @CachePut(value = "users", key = "#user.id")
@@ -40,11 +40,12 @@ public class UserService {
     }
 
     @CacheEvict(value = "users", key = "#id")
-    public void deleteUser(Long id) {
+    public User deleteUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             userRepository.delete(user);
         }
+        return user;
     }
 
     public List<User> getUsersByYear(Integer year) {
